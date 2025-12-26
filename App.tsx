@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
   const [quizStarted, setQuizStarted] = useState(false);
   const [isBonusRound, setIsBonusRound] = useState(false);
+  const [isExited, setIsExited] = useState(false);
   const [bonusQuestions, setBonusQuestions] = useState<Question[]>([]);
   const [normalResults, setNormalResults] = useState<{ score: number, total: number, answers: any[] } | null>(null);
   const [bonusResults, setBonusResults] = useState<{ score: number, total: number, answers: any[] } | null>(null);
@@ -30,6 +31,11 @@ const App: React.FC = () => {
     setBonusResults(null);
     setBonusQuestions([]);
     setTotalTime(0);
+    setIsExited(false);
+  }, []);
+
+  const handleExit = useCallback(() => {
+    setIsExited(true);
   }, []);
 
   const switchGrade = useCallback((newGrade: GradeLevel) => {
@@ -41,6 +47,7 @@ const App: React.FC = () => {
     setBonusResults(null);
     setBonusQuestions([]);
     setTotalTime(0);
+    setIsExited(false);
   }, []);
 
   const selectedQuestions = useMemo(() => {
@@ -57,6 +64,7 @@ const App: React.FC = () => {
     setIsBonusRound(false);
     setNormalResults(null);
     setBonusResults(null);
+    setIsExited(false);
     startTimeRef.current = Date.now();
   };
 
@@ -78,7 +86,6 @@ const App: React.FC = () => {
       const gradeData = CURRICULUM.find(c => c.grade === grade);
       const topicData = gradeData?.topics.find(t => t.name === topic);
       
-      // Look for bonus pool
       const otherPools = [Difficulty.HARD, Difficulty.MEDIUM, Difficulty.EASY].filter(d => d !== difficulty);
       const pool = topicData?.questions[otherPools[0]] || [];
       
@@ -120,9 +127,32 @@ const App: React.FC = () => {
     };
   }, [normalResults, bonusResults, selectedQuestions, bonusQuestions, totalTime]);
 
+  if (isExited) {
+    return (
+      <div className="min-h-screen bg-sky-50 flex flex-col items-center justify-center p-4">
+        <div className="bg-white rounded-[3rem] p-12 shadow-2xl text-center max-w-md animate-in zoom-in duration-500">
+          <div className="text-8xl mb-6">👋</div>
+          <h2 className="text-4xl font-brand font-bold text-sky-800 mb-4">Mission Complete!</h2>
+          <p className="text-gray-500 text-xl mb-8 leading-relaxed">
+            Great job today, Explorer! You're one step closer to becoming a Math Master. See you next time!
+          </p>
+          <button 
+            onClick={reset}
+            className="w-full py-4 bg-sky-500 text-white font-bold text-xl rounded-2xl hover:bg-sky-600 transition-all shadow-lg"
+          >
+            Start New Session
+          </button>
+        </div>
+        <footer className="mt-12 text-sky-400 text-sm">
+           © {new Date().getFullYear()} Cupertino Math Explorer
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-sky-50 flex flex-col selection:bg-sky-200">
-      <Header onHomeClick={reset} onGradeSwitch={switchGrade} />
+      <Header onHomeClick={reset} onGradeSwitch={switchGrade} onQuit={handleExit} />
       
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl relative">
         {!grade && (
