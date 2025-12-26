@@ -1,0 +1,7 @@
+{
+  "name": "Cupertino Math Explorer",
+  "description": "An interactive math testing and learning platform for 4th and 5th graders, aligned with the CUSD (California Common Core) curriculum, featuring AI-powered explanations.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
