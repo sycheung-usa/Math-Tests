@@ -1,12 +1,12 @@
 
 import React, { useState, useMemo, useCallback, useRef } from 'react';
-import { GradeLevel, Subject, Difficulty, Question } from './types';
-import { CURRICULUM } from './constants';
-import GradeSelector from './components/GradeSelector';
-import TopicSelector from './components/TopicSelector';
-import QuizView from './components/QuizView';
-import ResultView from './components/ResultView';
-import Header from './components/Header';
+import { GradeLevel, Subject, Difficulty, Question } from './types.ts';
+import { CURRICULUM } from './constants.tsx';
+import GradeSelector from './components/GradeSelector.tsx';
+import TopicSelector from './components/TopicSelector.tsx';
+import QuizView from './components/QuizView.tsx';
+import ResultView from './components/ResultView.tsx';
+import Header from './components/Header.tsx';
 
 const App: React.FC = () => {
   const [grade, setGrade] = useState<GradeLevel | null>(null);

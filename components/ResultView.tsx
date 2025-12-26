@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Question, Difficulty } from '../types';
-import { gemini } from '../services/geminiService';
+import { Question, Difficulty } from '../types.ts';
+import { gemini } from '../services/geminiService.ts';
 
 interface ResultViewProps {
   results: { 
